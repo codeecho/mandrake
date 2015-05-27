@@ -41,6 +41,14 @@ public class Response {
         return headers.get(name);
     }
     
+    public void setContentType(String contentType){
+        setHeader("Content-Type", contentType);
+    }
+    
+    public String getContentType(){
+        return getHeader("Content-Type");
+    }
+    
     public static ResponseBuilder ok(){
         return new ResponseBuilder().status(200);
     }

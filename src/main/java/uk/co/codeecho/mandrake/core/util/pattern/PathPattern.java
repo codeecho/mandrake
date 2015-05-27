@@ -1,24 +1,22 @@
 package uk.co.codeecho.mandrake.core.util.pattern;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.google.code.regexp.Matcher;
+import com.google.code.regexp.Pattern;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PathPattern {
 
     private String path;
     private Pattern pattern;
-    private Set<String> parameters;
+    private List<String> parameters;
 
     public PathPattern(String path) {
         this.path = path;
         String regex = path.replace("{", "(?<").replace("}", ">.*)");
         pattern = Pattern.compile(regex);
-        parameters = getPathParameters(pattern);
+        parameters = pattern.groupNames();
     }
 
     public String getPath() {
@@ -29,7 +27,7 @@ public class PathPattern {
         return pattern;
     }
 
-    public Set<String> getParameters() {
+    public List<String> getParameters() {
         return parameters;
     }
 
@@ -43,25 +41,6 @@ public class PathPattern {
             return new PathPatternMatchResult(true, pathParams);
         } else {
             return new PathPatternMatchResult(false, new HashMap<String, String>());
-        }
-    }
-
-    private Set<String> getPathParameters(Pattern pattern) {
-        try {
-            Method namedGroupsMethod = Pattern.class.getDeclaredMethod("namedGroups");
-            namedGroupsMethod.setAccessible(true);
-            Map<String, Integer> namedGroups = (Map<String, Integer>) namedGroupsMethod.invoke(pattern);
-            return namedGroups.keySet();
-        } catch (IllegalAccessException ex) {
-            return null;
-        } catch (IllegalArgumentException ex) {
-            return null;
-        } catch (InvocationTargetException ex) {
-            return null;
-        } catch (NoSuchMethodException ex) {
-            return null;
-        } catch (SecurityException ex) {
-            return null;
         }
     }
 

@@ -46,19 +46,26 @@ public class AssetLoaderTest {
     @Test
     public void testLoadWebjarJS() {
         AssetLoader assetLoader = new AssetLoader();
-        String result = assetLoader.convert("webjar:jquery.js", null);
+        String result = assetLoader.convert("webjar:jquery:jquery.js", null);
         assertEquals("<script type=\"text/javascript\" src=\"webjars/jquery/2.1.4/jquery.js\"> </script>", result);
     }
 
     @Test
-    public void testLoadNonExistantWebjarJS() {
+    public void testLoadNonExistantWebjar() {
         AssetLoader assetLoader = new AssetLoader();
         try {
-            String result = assetLoader.convert("webjar:foobar.js", null);
+            String result = assetLoader.convert("webjar:foo:foobar.js", null);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException ex) {
             // pass
         }
+    }
+    
+    @Test
+    public void testLoadNonExistantWebjarFile() {
+        AssetLoader assetLoader = new AssetLoader();
+        String result = assetLoader.convert("webjar:jquery:foobar.js", null);
+        assertEquals("<script type=\"text/javascript\" src=\"webjars/jquery/2.1.4/foobar.js\"> </script>", result);
     }
 
 }

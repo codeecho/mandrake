@@ -17,9 +17,8 @@ import uk.co.codeecho.mandrake.core.request.Response;
 import uk.co.codeecho.mandrake.core.task.Task;
 import it.sauronsoftware.cron4j.Scheduler;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import uk.co.codeecho.mandrake.core.controller.impl.RendererController;
 import uk.co.codeecho.mandrake.core.controller.impl.ResponseController;
 import uk.co.codeecho.mandrake.core.controller.impl.SubRouterController;
@@ -29,7 +28,6 @@ import uk.co.codeecho.mandrake.core.renderer.Renderer;
 import uk.co.codeecho.mandrake.core.renderer.RendererNotRegisteredException;
 import uk.co.codeecho.mandrake.core.renderer.impl.jade.JadeRenderer;
 import uk.co.codeecho.mandrake.core.request.Request;
-import uk.co.codeecho.mandrake.core.request.impl.ServletRequest;
 import uk.co.codeecho.mandrake.core.request.impl.WrappedRequest;
 import uk.co.codeecho.mandrake.core.util.pattern.PathPattern;
 import uk.co.codeecho.mandrake.core.util.pattern.PathPatternMatchResult;
@@ -52,7 +50,7 @@ public class Router {
         scheduler.start();
         EntityManagerFactory.setManager(new EntityManagerImpl(new MongoDao(new Fongo("Mandrake Server").getDB("mandrake"), new DataBackedObjectMapper())));
         for (HttpMethod method : HttpMethod.values()) {
-            controllers.put(method, new HashMap<PathPattern, LinkedList<Controller>>());
+            controllers.put(method, new LinkedHashMap<PathPattern, LinkedList<Controller>>());
         }
         renderers.put("jade", new JadeRenderer());
     }
@@ -78,6 +76,7 @@ public class Router {
                 response = Response.status(404).build();
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             response = Response.status(500).body(ex).build();
             try {
                 for (Entry<Class<? extends Exception>, LinkedList<Controller>> entry : exceptionControllers.entrySet()) {
@@ -86,6 +85,7 @@ public class Router {
                     }
                 }
             } catch (Exception ex2) {
+                ex2.printStackTrace();
                 response = Response.status(500).body(ex2).build();
             }
         }
@@ -93,6 +93,7 @@ public class Router {
             try {
                 response = new ControllerChainImpl(wrappedRequest, statusControllers.get(response.getStatus())).advance(response);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 response = Response.status(500).build();
             }
         }
