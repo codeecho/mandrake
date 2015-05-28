@@ -8,7 +8,7 @@ import uk.co.codeecho.mandrake.core.controller.AbstractController;
 import uk.co.codeecho.mandrake.core.request.Request;
 import uk.co.codeecho.mandrake.core.request.Response;
 
-public class AssetController extends AbstractController{
+public abstract class AssetController extends AbstractController{
 
     public static Map<String, String> CONTENT_TYPES = new HashMap<String, String>();
     
@@ -38,7 +38,7 @@ public class AssetController extends AbstractController{
     @Override
     protected void handle(Request request, Response response, Map<String, Object> model) throws Exception {
         String path = request.getPath();
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("META-INF/resources" + path);
+        InputStream stream = getAssetStream(path);
         if(stream == null){
             exit(Response.status(404).build());
         }else{
@@ -51,5 +51,7 @@ public class AssetController extends AbstractController{
             response.setBody(stream);
         }
     }
+    
+    protected abstract InputStream getAssetStream(String path) throws Exception;
     
 }
