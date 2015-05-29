@@ -94,6 +94,12 @@
             <version>2.1.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>angular-screenmatch</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -121,6 +127,14 @@
             <id>revsysSnapshot</id>
             <name>Revolutionary Systems Snapshot Repository</name>
             <url>http://build.revsys.co.uk/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-webjars-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/webjars/maven</url>
         </repository>
     </repositories>
     <build>

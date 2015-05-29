@@ -17,32 +17,32 @@ public class AssetLoader extends CachingFilter {
         for (String asset : assets.split("\n")) {
             String file = asset;
             if (asset.startsWith("webjar:")) {
-                String[] tokens = asset.split(":");
-                if(tokens.length!=3){
-                    throw new IllegalArgumentException("Webjar paths should be in the form webjar:{jar}:{path}");
-                }
-                String jar = tokens[1];
-                String path = tokens[2];
-                Properties properties = new Properties();
-                InputStream stream = getClass().getClassLoader().getResourceAsStream("META-INF/maven/org.webjars/" + jar + "/pom.properties");
-                if(stream == null){
-                    throw new IllegalArgumentException("Could not find webjar for " + jar);
-                }
-                try {
-                    properties.load(stream);
-                    String version = properties.getProperty("version");
-                    file = "webjars/" + jar + "/" + version + "/" + path;
-                } catch (IOException ex) {
-                    throw new IllegalArgumentException(ex);
-                } finally {
-                    try {
-                        stream.close();
-                    } catch (IOException ex) {
-
-                    }
-                }
-                //file = webjarAssetLoader.getFullPath(asset.substring(7));
-                //file = file.replace("META-INF/resources/", "");
+//                String[] tokens = asset.split(":");
+//                if(tokens.length!=3){
+//                    throw new IllegalArgumentException("Webjar paths should be in the form webjar:{jar}:{path}");
+//                }
+//                String jar = tokens[1];
+//                String path = tokens[2];
+//                Properties properties = new Properties();
+//                InputStream stream = getClass().getClassLoader().getResourceAsStream("META-INF/maven/org.webjars/" + jar + "/pom.properties");
+//                if(stream == null){
+//                    throw new IllegalArgumentException("Could not find webjar for " + jar);
+//                }
+//                try {
+//                    properties.load(stream);
+//                    String version = properties.getProperty("version");
+//                    file = "webjars/" + jar + "/" + version + "/" + path;
+//                } catch (IOException ex) {
+//                    throw new IllegalArgumentException(ex);
+//                } finally {
+//                    try {
+//                        stream.close();
+//                    } catch (IOException ex) {
+//
+//                    }
+//                }
+                file = webjarAssetLoader.getFullPath(asset.substring(7));
+                file = file.replace("META-INF/resources/", "");
             } else {
                 file = "assets/" + file;
             }
