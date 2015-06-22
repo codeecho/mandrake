@@ -1,10 +1,5 @@
 package uk.co.codeecho.mandrake.core.router;
 
-import biz.devspot.entity.framework.core.EntityManagerFactory;
-import biz.devspot.entity.framework.core.EntityManagerImpl;
-import biz.devspot.entity.framework.core.dao.mongo.MongoDao;
-import biz.devspot.entity.framework.core.mapping.json.DataBackedObjectMapper;
-import com.github.fakemongo.Fongo;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,13 +37,12 @@ public class Router {
     private Map<Integer, LinkedList<Controller>> statusControllers = new HashMap<Integer, LinkedList<Controller>>();
     private Map<Class<? extends Exception>, LinkedList<Controller>> exceptionControllers = new HashMap<Class<? extends Exception>, LinkedList<Controller>>();
     private Map<String, Controller> controllerMap = new HashMap<String, Controller>();
-    
+
     private LinkedList<Controller> context;
 
     public Router() {
         scheduler = new Scheduler();
         scheduler.start();
-        EntityManagerFactory.setManager(new EntityManagerImpl(new MongoDao(new Fongo("Mandrake Server").getDB("mandrake"), new DataBackedObjectMapper())));
         for (HttpMethod method : HttpMethod.values()) {
             controllers.put(method, new LinkedHashMap<PathPattern, LinkedList<Controller>>());
         }
@@ -99,15 +93,15 @@ public class Router {
         }
         return response;
     }
-    
-    public Router route(HttpMethod method){
+
+    public Router route(HttpMethod method) {
         return route(method, "/{path}");
     }
-    
-    public Router route(String path){
+
+    public Router route(String path) {
         List<LinkedList> contexts = new ArrayList<LinkedList>();
         PathPattern pathPattern = new PathPattern(path);
-        for(HttpMethod method: HttpMethod.values()){
+        for (HttpMethod method : HttpMethod.values()) {
             LinkedList<Controller> context = new LinkedList<Controller>();
             controllers.get(method).put(pathPattern, context);
             contexts.add(context);
@@ -138,12 +132,12 @@ public class Router {
         context.add(controller);
         return this;
     }
-    
-    public Router to(String alias){
+
+    public Router to(String alias) {
         return to(controllerMap.get(alias));
     }
-    
-    public Router to(Router router){
+
+    public Router to(Router router) {
         return to(new SubRouterController(router));
     }
 
@@ -189,7 +183,7 @@ public class Router {
     }
 
     public Router redirect(String path) {
-        return to(new ResponseController(Response.status(302).header("Location", path).build()));
+        return to(new ResponseController(Response.redirect(path).build()));
     }
 
     public Router json() {
@@ -201,26 +195,27 @@ public class Router {
     }
 
     public Router format(String type) {
-        if(formatters.containsKey(type)){
+        if (formatters.containsKey(type)) {
             return to(formatters.get(type));
-        }else{
+        } else {
             throw new FormatterNotRegisteredException(type);
         }
     }
 
-    public void register(String alias, Controller controller){
+    public void register(String alias, Controller controller) {
         controllerMap.put(alias, controller);
     }
-    
+
     public void register(String type, Renderer renderer) {
         renderers.put(type, renderer);
     }
-    
-    public void register(String type, Formatter formatter){
+
+    public void register(String type, Formatter formatter) {
         formatters.put(type, formatter);
     }
-    
-    public class DelegatingLinkedList<E> extends LinkedList<E>{
+
+    public class DelegatingLinkedList<E> extends LinkedList<E> {
+
         private List<LinkedList> lists = new ArrayList<LinkedList>();
 
         public DelegatingLinkedList(List<LinkedList> lists) {
@@ -229,7 +224,7 @@ public class Router {
 
         @Override
         public boolean add(E e) {
-            for(LinkedList list: lists){
+            for (LinkedList list : lists) {
                 list.add(e);
             }
             return true;

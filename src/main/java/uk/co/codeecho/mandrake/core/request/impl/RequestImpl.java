@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.co.codeecho.mandrake.core.request.impl;
 
 import java.io.IOException;
@@ -12,14 +7,11 @@ import java.util.Map;
 import uk.co.codeecho.mandrake.core.request.HttpMethod;
 import uk.co.codeecho.mandrake.core.request.Request;
 
-/**
- *
- * @author Adam
- */
 public class RequestImpl implements Request{
 
     private HttpMethod method;
     private String path;
+    private String query;
     private Map<String, String> parameters = new HashMap<String, String>();
     private Map<String, String> pathParameters = new HashMap<String, String>();
     private Map<String, Object> attributes = new HashMap<String, Object>();
@@ -28,6 +20,32 @@ public class RequestImpl implements Request{
     public RequestImpl(HttpMethod method, String path) {
         this.method = method;
         this.path = path;
+    }
+
+    public RequestImpl(HttpMethod method, String path, String query) {
+        this.method = method;
+        this.path = path;
+        this.query = query;
+    }
+    
+    public RequestImpl(HttpMethod method, String path, String query, Map<String, String> parameters) {
+        this.method = method;
+        this.path = path;
+        this.query = query;
+        this.parameters = parameters;
+    }
+
+    public RequestImpl(HttpMethod method, String path, InputStream body) {
+        this.method = method;
+        this.path = path;
+        this.body = body;
+    }
+
+    public RequestImpl(HttpMethod method, String path, Map<String, String> parameters, InputStream body) {
+        this.method = method;
+        this.path = path;
+        this.parameters = parameters;
+        this.body = body;
     }
     
     @Override
@@ -38,6 +56,11 @@ public class RequestImpl implements Request{
     @Override
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public String getQuery() {
+        return query;
     }
 
     @Override

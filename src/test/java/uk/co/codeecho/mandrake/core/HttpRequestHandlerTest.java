@@ -12,7 +12,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import uk.co.codeecho.mandrake.core.formatter.impl.TextFormatter;
 import uk.co.codeecho.mandrake.core.request.HttpMethod;
 import uk.co.codeecho.mandrake.core.router.Router;
 

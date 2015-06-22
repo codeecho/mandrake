@@ -12,7 +12,7 @@ import uk.co.codeecho.mandrake.core.request.Response;
 import uk.co.codeecho.mandrake.core.request.impl.ServletRequest;
 import uk.co.codeecho.mandrake.core.router.Router;
 
-public class HttpRequestHandler implements org.springframework.web.HttpRequestHandler {
+public class HttpRequestHandler{
     
     private final Router router;
 
@@ -20,7 +20,6 @@ public class HttpRequestHandler implements org.springframework.web.HttpRequestHa
         this.router = router;
     }
     
-    @Override
     public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Response response = router.handle(new ServletRequest(req, new HashMap<String, String>()));
         resp.setStatus(response.getStatus());

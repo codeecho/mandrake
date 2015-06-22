@@ -61,4 +61,8 @@ public class Response {
         return new ResponseBuilder().status(status);
     }
     
+    public static ResponseBuilder redirect(String path){
+        return new ResponseBuilder().status(302).header("Location", path);
+    }
+    
 }

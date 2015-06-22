@@ -64,5 +64,10 @@ public class ServletRequest implements Request{
     public InputStream getBody() throws IOException {
         return request.getInputStream();
     }
+
+    @Override
+    public String getQuery() {
+        return request.getQueryString();
+    }
     
 }

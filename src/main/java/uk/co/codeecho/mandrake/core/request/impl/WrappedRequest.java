@@ -58,5 +58,10 @@ public class WrappedRequest implements Request{
     public InputStream getBody() throws IOException {
         return request.getBody();
     }
+
+    @Override
+    public String getQuery() {
+        return request.getQuery();
+    }
     
 }

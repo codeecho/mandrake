@@ -9,6 +9,8 @@ public interface Request {
     
     public String getPath();
     
+    public String getQuery();
+    
     public String getParameter(String name);
     
     public String getParameter(String name, String defaultValue);

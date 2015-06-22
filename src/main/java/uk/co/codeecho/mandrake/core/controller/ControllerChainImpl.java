@@ -31,6 +31,19 @@ public class ControllerChainImpl implements ControllerChain {
 
     @Override
     public Response advance(Response response) throws Exception {
+        return advance(null, response);
+    }
+
+    @Override
+    public Response advance(Request request) throws Exception {
+        return advance(request, null);
+    }
+
+    @Override
+    public Response advance(Request request, Response response) throws Exception {
+        if(request != null){
+            this.request = request;
+        }
         if (response != null) {
             this.response = response;
         }
