@@ -19,6 +19,8 @@ import uk.co.codeecho.mandrake.core.controller.impl.ResponseController;
 import uk.co.codeecho.mandrake.core.controller.impl.SubRouterController;
 import uk.co.codeecho.mandrake.core.formatter.Formatter;
 import uk.co.codeecho.mandrake.core.formatter.FormatterNotRegisteredException;
+import uk.co.codeecho.mandrake.core.formatter.impl.JSONFormatter;
+import uk.co.codeecho.mandrake.core.formatter.impl.TextFormatter;
 import uk.co.codeecho.mandrake.core.renderer.Renderer;
 import uk.co.codeecho.mandrake.core.renderer.RendererNotRegisteredException;
 import uk.co.codeecho.mandrake.core.renderer.impl.jade.JadeRenderer;
@@ -46,6 +48,8 @@ public class Router {
         for (HttpMethod method : HttpMethod.values()) {
             controllers.put(method, new LinkedHashMap<PathPattern, LinkedList<Controller>>());
         }
+        formatters.put("json", new JSONFormatter());
+        formatters.put("text", new TextFormatter());
         renderers.put("jade", new JadeRenderer());
     }
 
